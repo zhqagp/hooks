@@ -12,12 +12,13 @@ $serv->on('Request', function($request, $response) {
         '110.com'=>'/alidata/www/110',
         );
     var_dump($request->get['app']);
+    $log = '/alidata/logs/deploy.log';
     $secret = json_decode($request->post['payload'])->secret;
     foreach ($arr as $k => $v) {
         if ($k==$secret) {
             date_default_timezone_set('PRC');
             $date = date('Y-m-d H:i:s',time());
-            $shell = "(cd $v&&echo''&&echo $k&&echo $date&&git pull)>>/alidata/logs/deploy.log";
+            $shell = "(cd $v&&echo''&&echo $k&&echo $date&&git pull)>>$log";
             var_dump($shell);
             shell_exec($shell);
         }
