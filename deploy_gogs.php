@@ -13,12 +13,13 @@ $serv->on('Request', function($request, $response) {
         );
     var_dump($request->get['app']);
     $log = '/alidata/logs/deploy.log';
-    $secret = json_decode($request->post['payload'])->secret;
+    $payload = json_decode($request->post['payload'], true);
+    $secret = $payload['secret'];
     foreach ($arr as $k => $v) {
         if ($k==$secret) {
             date_default_timezone_set('PRC');
             $date = date('Y-m-d H:i:s',time());
-            $shell = "(cd $v&&echo''&&echo $k&&echo $date&&git pull)>>$log";
+            $shell = "(cd $v&&echo''&&echo $k&&echo $date&&git reset --hard&&git pull)>>$log";
             var_dump($shell);
             shell_exec($shell);
         }

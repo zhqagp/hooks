@@ -16,7 +16,7 @@ $serv->on('Request', function($request, $response) {
         if ($k==$request->header["x-gitlab-token"]) {
             date_default_timezone_set('PRC');
             $date = date('Y-m-d H:i:s',time());
-            $shell = "(cd $v&&echo''&&echo $k&&echo $date&&git pull)>>$log";
+            $shell = "(cd $v&&echo''&&echo $k&&echo $date&&git reset --hard&&git pull)>>$log";
             shell_exec($shell);
         }
     }
